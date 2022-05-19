@@ -57,6 +57,7 @@ namespace CapstoneProject.Controllers
 
             }
             po.polines = sortedLines.Values.ToList();
+            po.PoTotal = po.polines.Sum(x => x.LineTotal);
             return po;
         }
 
