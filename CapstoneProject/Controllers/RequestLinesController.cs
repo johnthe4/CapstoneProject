@@ -77,6 +77,11 @@ namespace CapstoneProject.Controllers
                 return BadRequest();
             }
 
+            // check to make sure quantity is positive int
+            if (requestLine.Quantity < 1) {
+                throw new Exception("Quantity has to be positive integer");
+            }
+
             _context.Entry(requestLine).State = EntityState.Modified;
 
             try
@@ -108,6 +113,11 @@ namespace CapstoneProject.Controllers
           {
               return Problem("Entity set 'AppDbContext.RequestLines'  is null.");
           }
+            // check to make sure quantity is positive int
+            if (requestLine.Quantity < 1) {
+                throw new Exception("Quantity has to be positive integer");
+            }
+
             _context.RequestLines.Add(requestLine);
             await _context.SaveChangesAsync();
             await RecalculateTotal(requestLine.RequestId);
