@@ -20,6 +20,46 @@ namespace CapstoneProject.Controllers
             _context = context;
         }
 
+        // PO create method
+        [HttpGet("po/{vendorId}")]
+        public async Task<ActionResult<PO>> CreatePo(int vendorId) {
+            var po = new PO();
+            po.Vendor = await _context.Vendors.FindAsync(vendorId);
+
+            var lines = (from v in _context.Vendors
+                        join p in _context.Products
+                            on v.Id equals p.VendorId
+                        join rl in _context.RequestLines
+                            on p.Id equals rl.ProductId
+                        where rl.Request.Status == "Approved"
+                        select new {
+                            p.Id,
+                            Product = p.Name,
+                            rl.Quantity,
+                            p.Price,
+                            LineTotal = p.Price * rl.Quantity
+                        });
+
+            var sortedLines = new SortedList<int, Poline>();
+
+            foreach (var line in lines) {
+                if (!sortedLines.ContainsKey(line.Id)) {
+                    var poline = new Poline() {
+                        Product = line.Product,
+                        Quantity = 0,
+                        Price = line.Price,
+                        LineTotal = 0
+                    };
+                    sortedLines.Add(line.Id, poline);
+                }
+                sortedLines[line.Id].Quantity += line.Quantity;
+                sortedLines[line.Id].LineTotal += line.LineTotal;
+
+            }
+            po.polines = sortedLines.Values.ToList();
+            return po;
+        }
+
         // GET: api/Vendors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vendor>>> GetVendors()
