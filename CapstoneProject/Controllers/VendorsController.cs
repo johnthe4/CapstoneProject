@@ -20,6 +20,12 @@ namespace CapstoneProject.Controllers
             _context = context;
         }
 
+        // PO create method
+        [HttpGet("po/{vendorId}")]
+        public async Task<ActionResult<PO>> CreatePo(int vendorId) {
+
+        }
+
         // GET: api/Vendors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vendor>>> GetVendors()
