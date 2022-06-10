@@ -124,12 +124,12 @@ namespace CapstoneProject.Controllers
             {
                 return BadRequest();
             }
-            Request req = await _context.Requests.FindAsync(id);
+            //Request req = await _context.Requests.FindAsync(id);
 
-            // user not able to change status or total
-            if(request.Status != req.Status || request.Total != req.Total) {
-                return BadRequest();
-            }
+            //// user not able to change status or total
+            //if(request.Status != req.Status || request.Total != req.Total) {
+            //    return BadRequest();
+            //}
 
             _context.Entry(request).State = EntityState.Modified;
 
