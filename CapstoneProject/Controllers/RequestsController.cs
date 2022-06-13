@@ -72,14 +72,7 @@ namespace CapstoneProject.Controllers
                 return NotFound();
             }
 
-            var req = new List<Request>();
-            foreach (var i in _context.Requests) {
-                if(i.UserId != id && i.Status == "Review") {
-                    req.Add(i);
-                }
-            }
-            return req;
-
+            return await _context.Requests.Include(x => x.User).Where(x => x.Status == "Review" && x.UserId != id).ToListAsync();
         }
 
         // GET: api/Requests
