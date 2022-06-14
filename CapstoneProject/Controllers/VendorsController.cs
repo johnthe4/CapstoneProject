@@ -31,7 +31,7 @@ namespace CapstoneProject.Controllers
                             on v.Id equals p.VendorId
                         join rl in _context.RequestLines
                             on p.Id equals rl.ProductId
-                        where rl.Request.Status == "Approved"
+                        where rl.Request.Status == "Approved" && v.Id == po.Vendor.Id
                         select new {
                             p.Id,
                             Product = p.Name,
